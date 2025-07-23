@@ -73,7 +73,7 @@ public class Securityconfig {
 
     private UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173","https://unrivaled-lily-5329b3.netlify.app/"));
+        config.setAllowedOrigins(List.of("http://localhost:5173","https://unrivaled-lily-5329b3.netlify.app"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);

@@ -2,8 +2,6 @@ package com.example.bilingsoftware.config;
 
 import com.example.bilingsoftware.Filter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,61 +28,51 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Securityconfig {
 
-
-    private  final UserDetailsService userDetailService;
-
+    private final UserDetailsService userDetailService;
     private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // ✅ Use your own config
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/login", "/encode").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/category", "/items", "/order", "/payment", "/dashboard").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-
     @Bean
-    public AuthenticationManager authenticationManager()
-    {
-        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-       authenticationProvider.setUserDetailsService((UserDetailsService) userDetailService);
-       authenticationProvider.setPasswordEncoder(passwordEncoder());
-       return   new ProviderManager(authenticationProvider);
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder()
-    {
-        return  new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
+    // 🔥 Proper CORS setup for Render + Netlify
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of("https://unrivaled-lily-5329b3.netlify.app"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
-
-
-
-
 }

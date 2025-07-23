@@ -22,10 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "*")  // Correct case
 @RestController
 @RequiredArgsConstructor
-@crossOrigin(origins = "*")
-@RequestMapping("/login")
 public class AuthController {
 
 
@@ -38,7 +37,7 @@ public class AuthController {
 
     private  final PasswordEncoder passwordEncoder;
 
-    @PostMapping
+    @PostMapping("/register")
     public AuthResponse login(@RequestBody AuthRequest request) throws Exception {
         authenticate(request.getEmail(), request.getPassword());
 
@@ -50,6 +49,7 @@ public class AuthController {
     }
 
 
+    @PostMapping("/login")
     private void authenticate(String email, String password) throws Exception {
        try {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));

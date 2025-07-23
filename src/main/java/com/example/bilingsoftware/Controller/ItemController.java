@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@crossOrigin(origins = "*")
 public class ItemController {
 
     private final ItemService itemService;

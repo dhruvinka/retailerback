@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/dashboard")
 @RequiredArgsConstructor
+@crossOrigin(origins = "*")
 public class DashboardController {
 
     private final OrderService orderService;

@@ -24,6 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@crossOrigin(origins = "*")
 public class AuthController {
 
 

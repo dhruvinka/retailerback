@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
+@crossOrigin(origins = "*")
 public class OrderController {
 
 

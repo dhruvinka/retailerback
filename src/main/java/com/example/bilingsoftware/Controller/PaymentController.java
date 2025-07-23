@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/payment")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
 public class PaymentController
 {
 

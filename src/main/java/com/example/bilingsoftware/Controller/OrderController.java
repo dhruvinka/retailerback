@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
 public class OrderController {
 
 

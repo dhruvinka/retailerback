@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
 public class ItemController {
 
     private final ItemService itemService;

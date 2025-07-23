@@ -2,6 +2,8 @@ package com.example.bilingsoftware.config;
 
 import com.example.bilingsoftware.Filter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,6 +41,7 @@ public class Securityconfig {
                 .cors(Customizer.withDefaults()) // ✅ Use your own config
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/login", "/encode").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/category", "/items", "/order", "/payment", "/dashboard").hasAnyRole("USER", "ADMIN")
@@ -72,6 +75,7 @@ public class Securityconfig {
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of("https://unrivaled-lily-5329b3.netlify.app"));
         config.setAllowedHeaders(List.of("*"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

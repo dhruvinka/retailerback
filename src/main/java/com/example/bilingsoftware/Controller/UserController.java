@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
 public class UserController {
 
     private  final Userservice userservice;

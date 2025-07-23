@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/dashboard")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
 public class DashboardController {
 
     private final OrderService orderService;

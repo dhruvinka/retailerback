@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.Map;
 
-@CrossOrigin(origins = "*") // ✅ Enables CORS globally for this controller
+@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
+// ✅ Enables CORS globally for this controller
 @RestController
 @RequiredArgsConstructor
 public class AuthController {

@@ -25,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @crossOrigin(origins = "*")
+@RequestMapping("/login")
 public class AuthController {
 
 
@@ -37,7 +38,7 @@ public class AuthController {
 
     private  final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/login")
+    @PostMapping
     public AuthResponse login(@RequestBody AuthRequest request) throws Exception {
         authenticate(request.getEmail(), request.getPassword());
 

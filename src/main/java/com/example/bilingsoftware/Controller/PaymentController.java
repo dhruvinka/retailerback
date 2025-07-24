@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/payment")
-@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
+    @RequestMapping("/payment")
+@CrossOrigin(origins = "*")
 public class PaymentController
 {
 

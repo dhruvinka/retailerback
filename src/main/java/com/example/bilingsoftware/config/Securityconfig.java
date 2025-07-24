@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
@@ -28,7 +29,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Securityconfig {
 
-    private final UserDetailsService userDetailService;
+
+    private  final UserDetailsService userDetailService;
+
     private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
@@ -37,44 +40,47 @@ public class Securityconfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ Add this line
-                        .requestMatchers("/login", "/encode").permitAll()
+                        .requestMatchers("/login","/encode").permitAll()
                         .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/category", "/items", "/order", "/payment", "/dashboard").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/category", "/items","/order","/payment","/dashboard").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                )
-
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .anyRequest().authenticated())
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(provider);
+    public AuthenticationManager authenticationManager()
+    {
+        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+       authenticationProvider.setUserDetailsService((UserDetailsService) userDetailService);
+       authenticationProvider.setPasswordEncoder(passwordEncoder());
+       return   new ProviderManager(authenticationProvider);
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder()
+    {
+        return  new BCryptPasswordEncoder();
     }
 
-    // 🔥 Proper CORS setup for Render + Netlify
+
     @Bean
     public CorsFilter corsFilter() {
+        return new CorsFilter(corsConfigurationSource());
+    }
+
+    private UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:5173","https://unrivaled-lily-5329b3.netlify.app"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("https://unrivaled-lily-5329b3.netlify.app"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        return source;
     }
 }

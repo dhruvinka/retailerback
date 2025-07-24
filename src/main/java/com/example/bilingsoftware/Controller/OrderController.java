@@ -5,13 +5,13 @@ import com.example.bilingsoftware.io.OrderRequest;
 import com.example.bilingsoftware.io.OrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://unrivaled-lily-5329b3.netlify.app")
+@CrossOrigin(origins = "*")
 public class OrderController {
 
 
